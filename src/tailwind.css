@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Lilita+One&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+  @apply rounded-full;
+}
+.btn:hover {
+  background-color: #000;
+  color: #fff;
+  border: 2px solid #fff;
+}
+.bg-theme-1 {
+  background-color: #ba8bf9;
+  @apply text-white;
+}
+.bg-linear {
+  background: linear-gradient(
+      0deg,
+      rgba(172, 142, 235, 0.4),
+      rgba(172, 142, 235, 0.4)
+    ),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+}
+.bg-linear-banner {
+  background: linear-gradient(
+    0deg,
+    rgba(0, 5, 50, 0.89) 0%,
+    rgba(0, 5, 50, 0.4) 100%
+  );
+}
+body {
+  font-family: "Lilita One", sans-serif;
+}
+iframe {
+  border-radius: 15px;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  /* display: none !important; */
+  background-color: #ba8bf9;
+  padding: 30px;
+  color: #000 !important;
+  border-radius: 50%;
+}
+
+.swiper-button-next::after {
+  content: ">" !important;
+}
+.swiper-button-prev::after {
+  content: "<" !important;
+}
+
+.swiper-pagination {
+  position: relative !important;
+  padding-top: 10px;
+}
+.swiper-pagination-bullet {
+  background-color: white !important;
+}
+
+.nav {
+  transition: all 0.5s;
+}
+.Toastify__toast-container--top-right {
+  top: 5.5rem !important;
+}
