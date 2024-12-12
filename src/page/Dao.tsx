@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import metaLogo from '../assetsDao/logo_meta.webp';
 
@@ -13,11 +13,19 @@ import heroInfo5Image from '../assetsDao/hero_info5.webp';
 import heroInfo6Image from '../assetsDao/hero_info6.webp';
 
 import MainConnect from '../web3/MainConnect';
+import { WagmiProvider } from 'wagmi';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { config, queryClient } from '../web3/evm/WalletSetup';
+import { MainConnectBtn } from '../web3/MainConnectBtn';
 
 export const Dao:React.FC = () => {
 
+  
+
   return (
     <div>
+    
+
    
     <header>
       <div className="header-content">
@@ -25,7 +33,13 @@ export const Dao:React.FC = () => {
           <img src={saleLogo} alt="DAO Maker Logo" />
         </div>
 
-        <div><w3m-button size="md" /></div>
+        <div>
+        <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <MainConnectBtn></MainConnectBtn>
+      </QueryClientProvider>
+    </WagmiProvider>
+        </div>
       </div>
     </header>
 

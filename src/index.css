@@ -1231,3 +1231,89 @@
   .mtb button{
     margin: 10px 0px;
   }
+
+
+
+
+
+
+
+  /* Modal Overlay for android and telegram redirect */
+.modal {
+  display: flex; /* Make the modal visible by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* Dim background with transparency */
+  backdrop-filter: blur(5px); /* Blur effect for the background */
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+/* Modal Box */
+.modal-content {
+  background-color: #1c1c1e; /* Dark background for the modal */
+  color: white;
+  text-align: center;
+  border-radius: 12px;
+  padding: 0;
+  width: 270px; /* Adjust width for forced text wrapping */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden; /* Ensure no elements overflow */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Modal Text */
+.modal-text {
+  font-size: 14px;
+  margin: 0;
+  padding: 15px 10px;
+  border-bottom: 1px solid #2c2c2e; /* Full-width divider below text */
+  line-height: 1.4; /* Adjust spacing for wrapped text */
+  text-align: center;
+  white-space: normal; /* Allow line breaks */
+  word-wrap: break-word; /* Ensure long words break properly */
+}
+
+/* Buttons Container */
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+/* Buttons */
+.allow-btn,
+.deny-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 15px 0;
+  width: 100%;
+  font-family: inherit; /* Ensure the button text uses the same font as the modal */
+}
+
+/* Allow Button */
+.allow-btn {
+  color: #5daafc; /* Light blue color for "Allow" button */
+  border-bottom: 1px solid #2c2c2e; /* Full-width divider between buttons */
+}
+
+.allow-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Slight highlight effect */
+}
+
+/* Don't Allow Button */
+.deny-btn {
+  color: #5daafc; /* Same blue color for consistency */
+  font-weight: 600; /* Make the text bolder */
+}
+
+.deny-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Slight highlight effect */
+}

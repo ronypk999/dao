@@ -5,7 +5,7 @@ import { arbitrum, base, bsc, Chain, mainnet, polygon } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WalletConnect } from "./WalletConnect";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 const projectId = "0bdf4e02a318033ac42dd72db0c4c5f4";
 
 const metadata = {
@@ -16,7 +16,7 @@ const metadata = {
 };
 
 const chains: readonly [Chain, ...Chain[]] = [bsc, mainnet, polygon, arbitrum,base];
-const config = defaultWagmiConfig({
+export const config = defaultWagmiConfig({
   chains,
   projectId,
   metadata,

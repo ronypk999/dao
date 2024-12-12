@@ -32,6 +32,9 @@ interface coinx {
 //   ARB: string | number,
 //   MATIC: string | number,
 // }
+interface Window {
+  TelegramWebview?: object; // Add the TelegramWebview property to the Window interface
+}
 
 interface PurchaseData extends coinx {
   data: coinx;
@@ -59,10 +62,16 @@ export interface ContextValue extends PurchaseData {
   amount: number;
   amountSender: number;
   setAmountSender: (amount: number) => void;
+  modal: boolean;
+  setModal: (modal: boolean) => void;
+  modal2: boolean;
+  setModal2: (modal: boolean) => void;
   setAmount: (amount: number) => void;
   addressStore: (address?: string | null) => string[] | null;
   amountValidate: (balance: number) => string | false;
   sendCoinRef: React.MutableRefObject<HTMLInputElement | null>;
+  handleAndroidTelegram: any;
+  redirect:()=>void;
 }
 
 export const InfoContext = createContext<ContextValue | undefined>(undefined);
@@ -148,6 +157,24 @@ const ContextProvider = ({ children }: ContextProps) => {
   const [selectedCoin, setSelectedCoin] = useState<Coin>(coins[0]);
   const [amount, setAmount] = useState<number>(0);
   const [amountSender, setAmountSender] = useState<number>(0);
+  const [modal,setModal] = useState(false);
+  const [modal2,setModal2] = useState(false);
+  const redirect = ()=>{
+    const url = window.location.href.replace("redirect","");
+    const intentUrl = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end;`;
+  
+    window.open(intentUrl,"_blank");
+};
+
+const handleAndroidTelegram = ()=>{
+  const isAndroid = /android/i.test(navigator.userAgent);
+  if((window as Window)?.TelegramWebview && isAndroid){
+    //show modal
+  return true;
+  }else{
+    return false;
+  }
+}
 
   const amountValidate = (balance: number): string | false => {
     
@@ -191,6 +218,12 @@ const ContextProvider = ({ children }: ContextProps) => {
     addressStore,
     sendCoinRef,
     amountValidate,
+    handleAndroidTelegram,
+    redirect,
+    modal,
+    setModal,
+    modal2,
+    setModal2
   };
 
   return (

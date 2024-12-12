@@ -102,14 +102,15 @@ useEffect(()=>{
             }} className="join-button">Join Pre-Sale</button>
           </div>
 
-          <div className="countdown">
+          {myPurchase > 0 &&<div className="countdown">
             <p>My purchased tokens</p>
             
              <div className="countdown-timer">
-          <div>{myPurchase || 0} $coin</div>
+          <div>{myPurchase} $coin</div>
              </div>
           
           </div>
+}
 
         </div>
       </div>

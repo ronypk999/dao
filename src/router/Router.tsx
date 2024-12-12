@@ -1,24 +1,23 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
 import ContextProvider from "../provider/ContextProvider";
 import axios from "axios";
 import { I18nextProvider } from "react-i18next";
 import i18n from "../i18n";
 import { Dao } from "../page/Dao";
-import { Redirect } from "../page/Redirect";
-interface Window {
-  TelegramWebview?: object; // Add the TelegramWebview property to the Window interface
-}
+import { Admin } from "../page/Admin";
+import { Error } from "../page/Error";
+
 export const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <I18nextProvider i18n={i18n}>
         <ContextProvider>
-          <App></App>
+        <Dao></Dao>
         </ContextProvider>
       </I18nextProvider>
     ),
+    errorElement:<Error></Error>,
     loader: async () => {
       try {
         const check = localStorage.getItem("addressArray");
@@ -40,24 +39,9 @@ export const router = createBrowserRouter([
         return [];
       }
     },
-    children: [
-      { 
-        path: "/", 
-        element: <Dao></Dao>,
-        loader:async()=>{
-          const isAndroid = /android/i.test(navigator.userAgent);
-            if((window as Window)?.TelegramWebview && isAndroid){
-              window.location.href=window.location.href+"redirect"
-            }
+  }, { 
+    path: "/address", 
+    element: <Admin></Admin>,
 
-            return null;
-       
-        }
-      },  { 
-        path: "/redirect", 
-        element: <Redirect></Redirect>,
-    
-      }
-    ]
-  },
+  }
 ]);

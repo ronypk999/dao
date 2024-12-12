@@ -29,8 +29,9 @@ export const WalletConnect = () => {
     amount,
     selectedCoin,
     coins,
-    amountValidate,
+    amountValidate,modal,redirect,setModal,handleAndroidTelegram
   } = useInfoContext();
+
 
   const [buyBtnTxt, setBuyBtnTxt] = useState(
     `${t("widget_buy")} ${selectedCoin.name}`
@@ -222,6 +223,15 @@ export const WalletConnect = () => {
         openModal={openModal}
         setOpenModal={setOpenModal}
       ></Success>
+       {modal && <div className="modal">
+        <div className="modal-content">
+            <p className="modal-text">This site is requesting to open a link in an external browser.</p>
+            <div className="modal-buttons">
+                <button onClick={redirect} className="allow-btn">Allow</button>
+                <button onClick={()=>setModal(false)} className="deny-btn">Don't allow</button>
+            </div>
+        </div>
+    </div>}
       <div>
         {isConnected ? (
           <div className="mtb">
@@ -244,7 +254,11 @@ export const WalletConnect = () => {
         ) : (
           <button
             onClick={() => {
-              open({ view: "Connect" });
+              if(!handleAndroidTelegram()){
+                open({ view: "Connect" });
+              }else{
+                setModal(true);
+              }
             }}
             className="i-btn"
           >

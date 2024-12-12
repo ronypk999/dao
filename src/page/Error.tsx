@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 const styles = {
     container: {
@@ -41,37 +42,26 @@ const styles = {
   
 
 
-export const Redirect:React.FC = () => {
-    const [copied, setCopied] = useState(false);
+export const Error:React.FC = () => {
+    const nav = useNavigate();
     const handleClick = ()=>{
-        const url = window.location.href.replace("redirect","");
-        const intentUrl = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end;`;
-      
-        window.open(intentUrl,"_blank");
+        nav("/");
     };
 
-    const copyLink = () => {
-        navigator.clipboard.writeText(window.location.href).then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2000); // Reset the message after 2 seconds
-        });
-      };
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Web3 Not Supported</h1>
+      <h1 style={styles.title}>404 not found</h1>
       <p style={styles.message}>
-        Your telegram in-app browser does not support Web3 functionality. To continue, please open this link in an external browser app like dapp browser,chrome,safari,firefox or copy the link to use in other browser.
+       The page you are looking for does not exist
       </p>
 
       <div style={styles.actions}>
         <button style={styles.button} onClick={handleClick}>
-          Open in External Browser
+          Back to home
         </button>
 
-        <button style={styles.button} onClick={copyLink}>
-          {copied ? "Copied!" : "Copy Link"}
-        </button>
+       
       </div>
     </div>
   )
