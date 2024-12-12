@@ -13,10 +13,8 @@ import heroInfo5Image from '../assetsDao/hero_info5.webp';
 import heroInfo6Image from '../assetsDao/hero_info6.webp';
 
 import MainConnect from '../web3/MainConnect';
-import { useInfoContext } from '../hook/ContextHook';
 
 export const Dao:React.FC = () => {
-    const {selectedCoin} = useInfoContext();
 
   return (
     <div>

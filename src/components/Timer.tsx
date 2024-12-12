@@ -1,9 +1,8 @@
 import { useTimer } from "react-timer-hook";
 import { useInfoContext } from "../hook/ContextHook";
-import { useTranslation } from "react-i18next";
+
 
 export default function Timer() {
-  const { t } = useTranslation();
   const { presaleEndTime } = useInfoContext();
   let expiryTimestamp;
 

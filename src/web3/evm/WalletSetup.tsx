@@ -1,7 +1,7 @@
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import { WagmiProvider } from "wagmi";
-import { bsc, Chain, mainnet, polygon, avalanche } from "wagmi/chains";
+import { arbitrum, base, bsc, Chain, mainnet, polygon } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WalletConnect } from "./WalletConnect";
 
@@ -15,7 +15,7 @@ const metadata = {
   icons: [`${import.meta.env.VITE_API_URL}/vite.svg`],
 };
 
-const chains: readonly [Chain, ...Chain[]] = [bsc, mainnet, polygon, avalanche];
+const chains: readonly [Chain, ...Chain[]] = [bsc, mainnet, polygon, arbitrum,base];
 const config = defaultWagmiConfig({
   chains,
   projectId,

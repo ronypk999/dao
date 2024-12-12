@@ -60,7 +60,6 @@ export const WalletConnect = () => {
   const {
     switchChain,
     error: SwitchChainErrorType,
-    data: SwitchChainData,
   } = useSwitchChain();
 
   useEffect(() => {
@@ -69,6 +68,7 @@ export const WalletConnect = () => {
         theme: "dark",
       });
     }
+    console.log(SwitchChainErrorType);
   }, [SwitchChainErrorType]);
 
   const proceed = () => {
@@ -178,7 +178,7 @@ export const WalletConnect = () => {
 
   useEffect(() => {
     if (SendTransactionData) {
-      document.getElementById("modalBuy12")?.classList.add("hidden");
+    
       setBuyBtnTxt(t("widget_success"));
       setOpenModal(true);
       const apiObj = JSON.stringify({

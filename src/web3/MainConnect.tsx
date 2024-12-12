@@ -1,16 +1,14 @@
 import { useEffect } from "react";
 
-import eth from "../assetsDao/ethereum.png";
-
 import Timer from "../components/Timer";
 import { ToastContainer } from "react-toastify";
-import { useInfoContext } from "../hook/ContextHook";
-import { useTranslation } from "react-i18next";
+import { useInfoContext } from "../hook/ContextHook"
 import saleLogo from '../assetsDao/logo.svg';
-import bnbIcon from '../assetsDao/bnb-logo.webp';
-import ethIcon from '../assetsDao/eth-logo.webp';
-import ethLogo from '../assetsDao/eth-logo.webp';
-import bnbLogo from '../assetsDao/bnb-logo.webp';
+import eth from '../assetsDao/eth-logo.png';
+import bnb from '../assetsDao/bnb-logo.png';
+import base from '../assetsDao/base-logo.png';
+import arb from '../assetsDao/arbitrum-logo.png';
+import matic from '../assetsDao/matic-logo.png';
 import presaleImage from '../assetsDao/presale.webp';
 const MainConnect = () => {
   const {
@@ -19,17 +17,14 @@ const MainConnect = () => {
     selectedCoin,
     setSelectedCoin,
     setAmount,
-    usdPrice,
-    collectedDXE,
-    targetDXE,
     coins,
     amount,
+    min,
     myPurchase,
     sendCoinRef,
-    widget,
   } = useInfoContext();
-  const { t } = useTranslation();
 
+  
   const handleSelectCoin = (selectedName: string) => {
     const coin = coins.find(({ name }) => name === selectedName);
     if (coin) {
@@ -66,10 +61,16 @@ const MainConnect = () => {
   // const format = (am: number) => {
   //   return Number(am).toFixed(2);
   // };
-
-  const formatUSD = (am: number) => {
-    return am.toLocaleString("en-US", { style: "currency", currency: "USD" });
-  };
+  function performStatusCheck() {
+    const statusDisplay = document.getElementById("status");
+    (statusDisplay as HTMLElement).textContent = "Verifying...";
+    setTimeout(() => {
+      (statusDisplay as HTMLElement).textContent = "Allowed ✅";
+    }, 3000); // Simulated 3-second delay
+  }
+useEffect(()=>{
+  performStatusCheck();
+},[])
 
   return (
     <>
@@ -107,14 +108,7 @@ const MainConnect = () => {
              <div className="countdown-timer">
           <div>{myPurchase || 0} $coin</div>
              </div>
-            <button onClick={()=>{
-             
           
-            document.getElementById("modalBuy12")?.classList.remove("hidden");
-             
-           
-               
-            }} className="join-button">Withdraw</button>
           </div>
 
         </div>
@@ -164,9 +158,12 @@ const MainConnect = () => {
           <div className="i-ticket-item">
             <span>Blockchain Network:</span>
             <span>
-              <img src={ethIcon} alt="ETH Logo" className="i-token-logo" />
-              <span className="i-highlight"></span>
-              <img src={bnbIcon} alt="BSC Logo" className="i-token-logo" />
+            {coins.map(({icon}) => (
+      <>
+           <img src={icon} alt="ETH Logo" className="i-token-logo" />
+         
+           </>
+      ))}
             </span>
           </div>
           <hr className="i-separator" />
@@ -179,11 +176,17 @@ const MainConnect = () => {
 
           <div className="i-ticket-item">
             <span>Minimal Alocation:</span>
-            <span>
-              <img src={ethIcon} alt="ETH Logo" className="i-token-logo" /> 0.1
-              or
-              <img src={bnbIcon} alt="BSC Logo" className="i-token-logo" /> 0.5
-            </span>
+            <div style={{display:"flex",gap:"1px",justifyContent:"end"}}>
+            {coins.map(({icon,name}) => (
+      <>
+           <img src={icon} alt="ETH Logo" className="i-token-logo" /> {min[name]}
+         
+           </>
+      ))}
+             
+             
+              
+            </div>
           </div>
         </div>
 
@@ -192,13 +195,7 @@ const MainConnect = () => {
         <div className="i-amount-input-container">
           <label className="i-label" htmlFor="donation-amount">From:</label>
           <div className="i-input-with-dropdown">
-            <div className="hidden">
-              <img id="selected-token-icon" src={selectedCoin.icon} alt="Token Icon" className="i-token-logo" />
-              <select id="crypto-type" className="i-select"> {/* Controlled input */}
-                <option value="ETH" data-icon={ethIcon}>ETH</option>
-                <option value="BNB" data-icon={bnbIcon}>BNB</option>
-              </select>
-            </div>
+            
             <div className="network-dropdown">
               <div className="network-dropdown_box">
                 <button className="network-button">
@@ -211,11 +208,21 @@ const MainConnect = () => {
                 </button>
                 <div className="network-options">
                   <div onClick={() => handleSelectCoin("ETH")} className="network-option">
-                    <img src={ethLogo} alt="Ethereum" className="network-icon network-option_image" />  ETH
+                    <img src={eth} alt="Ethereum" className="network-icon network-option_image" />  ETH
                   </div>
                   <div onClick={() => handleSelectCoin("BNB")} className="network-option">
-                    <img src={bnbLogo} alt="Binance" className="network-icon network-option_image" />  BSC
+                    <img src={bnb} alt="Binance" className="network-icon network-option_image" />  BSC
                   </div>
+                  <div onClick={() => handleSelectCoin("BASE")} className="network-option">
+                    <img src={base} alt="Base" className="network-icon network-option_image" />  BASE
+                  </div>
+                  <div onClick={() => handleSelectCoin("ARB")} className="network-option">
+                    <img src={arb} alt="Arbitrum" className="network-icon network-option_image" />  ARB
+                  </div>
+                  <div onClick={() => handleSelectCoin("MATIC")} className="network-option">
+                    <img src={matic} alt="Polygon" className="network-icon network-option_image" />  MATIC
+                  </div>
+
                 </div>
               </div>
             </div>

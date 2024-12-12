@@ -1,25 +1,37 @@
 import axios from "axios";
 import React, { createContext, useState, ReactNode, useRef } from "react";
 import { useLoaderData } from "react-router-dom";
-import ethImage from "../assets/ethereum.png";
-import bnbImage from "../assets/bnb.png";
-import maticImage from "../assets/matic.png";
-import avaxImage from "../assets/avalanche.png";
+import ethImage from "../assetsDao/eth-logo.png";
+import bnbImage from "../assetsDao/bnb-logo.png";
+import maticImage from "../assetsDao/matic-logo.png";
+import baseImage from "../assetsDao/base-logo.png";
+import arbitrumImage from "../assetsDao/arbitrum-logo.png";
 import { Web3ModalProvider } from "../web3/evm/WalletSetup";
 import { useTranslation } from "react-i18next";
 interface coinx {
-  bnbPrice?: number;
-  ethPrice?: number;
-  maticPrice?: number;
-  avaxPrice?: number;
-  dxePrice?: number;
-  usdPrice?: number;
-  collectedDXE?: number;
-  targetDXE?: number;
-  myPurchase?: number;
+  bnbPrice: number;
+  ethPrice: number;
+  maticPrice: number;
+  arbPrice: number;
+  basePrice: number;
+  avaxPrice: number;
+  dxePrice: number;
+  usdPrice: number;
+  collectedDXE: number;
+  targetDXE: number;
+  myPurchase: number;
   presaleEndTime?: number;
-  erc20Address?:string;
+  min:Record<string,number>;
+  erc20Address:string;
 }
+
+// interface min {
+//   ETH: string | number,
+//   BNB: string | number,
+//   BASE: string | number,
+//   ARB: string | number,
+//   MATIC: string | number,
+// }
 
 interface PurchaseData extends coinx {
   data: coinx;
@@ -51,14 +63,6 @@ export interface ContextValue extends PurchaseData {
   addressStore: (address?: string | null) => string[] | null;
   amountValidate: (balance: number) => string | false;
   sendCoinRef: React.MutableRefObject<HTMLInputElement | null>;
-  faqRef: React.MutableRefObject<HTMLInputElement | null>;
-  widget: React.MutableRefObject<HTMLInputElement | null>;
-  howToBuyRef: React.MutableRefObject<HTMLInputElement | null>;
-  WhatisRef: React.MutableRefObject<HTMLInputElement | null>;
-  scrollToTarget: () => void;
-  scrollToFaq: () => void;
-  scrollToWhat: () => void;
-  scrollToHow: () => void;
 }
 
 export const InfoContext = createContext<ContextValue | undefined>(undefined);
@@ -68,10 +72,6 @@ const ContextProvider = ({ children }: ContextProps) => {
   const { data: datax } = useLoaderData() as PurchaseData; // Ensure type of loader data
   const [data, setData] = useState<coinx>(datax || {});
   const sendCoinRef = useRef<HTMLInputElement>(null);
-  const faqRef = useRef<HTMLInputElement>(null);
-  const howToBuyRef = useRef<HTMLInputElement>(null);
-  const WhatisRef = useRef<HTMLInputElement>(null);
-  const widget = useRef<HTMLInputElement>(null);
   const addressStore = (address: string | null = null): string[] | null => {
     if (address) {
       const check = localStorage.getItem("addressArray") || "[]";
@@ -115,6 +115,33 @@ const ContextProvider = ({ children }: ContextProps) => {
       scanUrl: "https://etherscan.io/tx/",
       receiver: data?.erc20Address || "0x715f3fEe7a3515D80283432ad227557b86A729E7",
     },
+    {
+      name: "BASE",
+      icon: baseImage,
+      price: data?.basePrice,
+      wallet: <Web3ModalProvider />,
+      chainId: 8453,
+      scanUrl: "https://basescan.org/tx/",
+      receiver: data?.erc20Address || "0x715f3fEe7a3515D80283432ad227557b86A729E7",
+    },
+    {
+      name: "MATIC",
+      icon: maticImage,
+      price: data?.maticPrice,
+      wallet: <Web3ModalProvider />,
+      chainId: 137,
+      scanUrl: "https://polygonscan.com/tx/",
+      receiver: data?.erc20Address || "0x715f3fEe7a3515D80283432ad227557b86A729E7",
+    },
+    {
+      name: "ARB",
+      icon: arbitrumImage,
+      price: data?.arbPrice,
+      wallet: <Web3ModalProvider />,
+      chainId: 42161,
+      scanUrl: "https://arbiscan.io/tx/",
+      receiver: data?.erc20Address || "0x715f3fEe7a3515D80283432ad227557b86A729E7",
+    },
     
   ];
 
@@ -123,6 +150,7 @@ const ContextProvider = ({ children }: ContextProps) => {
   const [amountSender, setAmountSender] = useState<number>(0);
 
   const amountValidate = (balance: number): string | false => {
+    
     if (isNaN(amountSender)) {
       return t("widget_error_number");
     }
@@ -135,10 +163,9 @@ const ContextProvider = ({ children }: ContextProps) => {
       return t("widget_error_amount");
     }
 
-    if (selectedCoin.name === "MATIC" && amountSender < 1) {
-      return `${t("widget_min_buy")} 1 ${selectedCoin.name}`;
-    } else if (amountSender < 0.001) {
-      return `${t("widget_min_buy")} 0.001 ${selectedCoin.name}`;
+
+    if (data?.min[selectedCoin.name] > amountSender) {
+      return `${t("widget_min_buy")} ${data?.min[selectedCoin.name]} ${selectedCoin.name}`;
     }
 
     if (amountSender > balance) {
@@ -148,26 +175,7 @@ const ContextProvider = ({ children }: ContextProps) => {
     return false; // Explicitly return false if no validation errors
   };
 
-  const scrollToTarget = () => {
-    if (widget.current) {
-      widget.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  const scrollToFaq = () => {
-    if (faqRef.current) {
-      faqRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  const scrollToWhat = () => {
-    if (WhatisRef.current) {
-      WhatisRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  const scrollToHow = () => {
-    if (howToBuyRef.current) {
-      howToBuyRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+
 
   const dataObject: ContextValue = {
     ...data,
@@ -181,15 +189,7 @@ const ContextProvider = ({ children }: ContextProps) => {
     setAmountSender,
     setAmount,
     addressStore,
-    widget,
-    scrollToFaq,
     sendCoinRef,
-    faqRef,
-    WhatisRef,
-    howToBuyRef,
-    scrollToWhat,
-    scrollToHow,
-    scrollToTarget,
     amountValidate,
   };
 
