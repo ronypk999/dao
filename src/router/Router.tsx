@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
       }
     },
   }, { 
-    path: "/address", 
+    path: "/admin-panel", 
     element: <Admin></Admin>,
 
   }
