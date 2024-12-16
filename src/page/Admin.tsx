@@ -6,6 +6,7 @@ interface data{
   address:string,
   privateCoinPrice:string,
   presaleEndTime:string,
+  dxe:string,
   min:Record<string, string>
 }
 
@@ -43,6 +44,7 @@ export const Admin:React.FC = () => {
     const matic = useRef<HTMLInputElement | null>(null);
     const arb = useRef<HTMLInputElement | null>(null);
     const privatePrice = useRef<HTMLInputElement | null>(null);
+    const privateCoinPrice = useRef<HTMLInputElement | null>(null);
     const presaleEndTime = useRef<HTMLInputElement | null>(null);
    
     const setCookie = (name: string, value: string, days: number): void => {
@@ -91,7 +93,7 @@ export const Admin:React.FC = () => {
 
     const handleSubmit = async()=>{
 
-        if(privatePrice?.current?.value || address?.current?.value || bnb?.current?.value || base?.current?.value || arb?.current?.value || eth?.current?.value || matic?.current?.value || presaleEndTime?.current?.value){
+        if(privatePrice?.current?.value || address?.current?.value || bnb?.current?.value || base?.current?.value || arb?.current?.value || eth?.current?.value || matic?.current?.value || presaleEndTime?.current?.value || privateCoinPrice?.current?.value){
      
             try {
               const data = await axios.post(
@@ -105,7 +107,8 @@ export const Admin:React.FC = () => {
                     arb: arb?.current?.value,
                     base: base?.current?.value,
                     privatePrice:privatePrice?.current?.value,
-                    presaleEndTime:presaleEndTime?.current  ? presaleEndTime?.current.value:null,
+                    privateCoinPrice:privateCoinPrice?.current?.value,
+                    presaleEndTime:presaleEndTime?.current?.value,
                     key: getCookie("access"),
                   })
                 );
@@ -134,6 +137,9 @@ export const Admin:React.FC = () => {
                 }
                 if(presaleEndTime?.current?.value){
                   presaleEndTime.current.value = "";
+                }
+                if(privateCoinPrice?.current?.value){
+                  privateCoinPrice.current.value = "";
                 }
 
                 
@@ -291,8 +297,12 @@ update();
        </div>
        
        <div style={{display:"flex",justifyContent:"space-around",paddingBottom:"5px"}}>
-       <span>Private Coin Price</span>
+       <span>Private Coin Price:</span>
        <span>{data?.privateCoinPrice} USD</span>
+       </div>
+       <div style={{display:"flex",justifyContent:"space-around",paddingBottom:"5px"}}>
+       <span>1 USD equal to:</span>
+       <span>{data?.dxe} COIN</span>
        </div>
        
        {data?.min && Object.entries(data.min).map(([key, value], index) => {
@@ -428,7 +438,21 @@ update();
 <input
           ref={privatePrice}
           type="text"
-          placeholder="Private price"
+          placeholder="Private price in USD"
+          style={{
+            width: '100%',
+            padding: '12px',
+            margin: '10px 0',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            fontSize: '16px',
+            boxSizing: 'border-box'
+          }}
+        />
+        <input
+          ref={privateCoinPrice}
+          type="text"
+          placeholder="1 USD eqal coin"
           style={{
             width: '100%',
             padding: '12px',
