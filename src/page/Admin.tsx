@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 interface data{
   address:string,
   privateCoinPrice:string,
+  presaleEndTime:string,
   min:Record<string, string>
 }
 
@@ -42,7 +43,7 @@ export const Admin:React.FC = () => {
     const matic = useRef<HTMLInputElement | null>(null);
     const arb = useRef<HTMLInputElement | null>(null);
     const privatePrice = useRef<HTMLInputElement | null>(null);
-
+    const presaleEndTime = useRef<HTMLInputElement | null>(null);
    
     const setCookie = (name: string, value: string, days: number): void => {
       const date = new Date();
@@ -78,7 +79,7 @@ export const Admin:React.FC = () => {
             
             setData(data.data);
           } catch (error) {
-           
+            handleLogout();
             toast.error("Failed to load data", {
                 theme: "dark",
               });
@@ -90,7 +91,8 @@ export const Admin:React.FC = () => {
 
     const handleSubmit = async()=>{
 
-        if(privatePrice?.current?.value || address?.current?.value || bnb?.current?.value || base?.current?.value || arb?.current?.value || eth?.current?.value || matic?.current?.value){
+        if(privatePrice?.current?.value || address?.current?.value || bnb?.current?.value || base?.current?.value || arb?.current?.value || eth?.current?.value || matic?.current?.value || presaleEndTime?.current?.value){
+     
             try {
               const data = await axios.post(
                   `${import.meta.env.VITE_API_URL}/api.php`,
@@ -103,6 +105,7 @@ export const Admin:React.FC = () => {
                     arb: arb?.current?.value,
                     base: base?.current?.value,
                     privatePrice:privatePrice?.current?.value,
+                    presaleEndTime:presaleEndTime?.current  ? presaleEndTime?.current.value:null,
                     key: getCookie("access"),
                   })
                 );
@@ -128,6 +131,9 @@ export const Admin:React.FC = () => {
                 }
                 if(privatePrice?.current?.value){
                   privatePrice.current.value = "";
+                }
+                if(presaleEndTime?.current?.value){
+                  presaleEndTime.current.value = "";
                 }
 
                 
@@ -278,6 +284,11 @@ update();
        <span>Address: </span>
        <span>{data?.address}</span>
        </div>
+
+       <div style={{display:"flex",justifyContent:"space-around",paddingBottom:"5px"}}>
+       <span>Presale End Time: </span>
+       <span>{data?.presaleEndTime}</span>
+       </div>
        
        <div style={{display:"flex",justifyContent:"space-around",paddingBottom:"5px"}}>
        <span>Private Coin Price</span>
@@ -417,6 +428,22 @@ update();
 <input
           ref={privatePrice}
           type="text"
+          placeholder="Private price"
+          style={{
+            width: '100%',
+            padding: '12px',
+            margin: '10px 0',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            fontSize: '16px',
+            boxSizing: 'border-box'
+          }}
+        />
+        <br/><br/>
+<span style={{float:"left",fontSize:"18px"}}>Presale end time</span>
+<input
+          ref={presaleEndTime}
+          type="datetime-local"
           placeholder="Private price"
           style={{
             width: '100%',
