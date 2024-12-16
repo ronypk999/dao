@@ -22,6 +22,7 @@ const MainConnect = () => {
     min,
     myPurchase,
     sendCoinRef,
+    usdPrice
   } = useInfoContext();
 
   
@@ -140,7 +141,7 @@ useEffect(()=>{
           {/* Price Row */}
           <div className="i-ticket-item">
             <span>Private Price:</span>
-            <span id="private-price">$0.02</span>
+            <span id="private-price">${usdPrice}</span>
           </div>
           <hr className="i-separator" />
 
